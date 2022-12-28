@@ -2,25 +2,28 @@ from PIL import Image
 from os import listdir
 from os.path import isfile, join
 
-p = "/Users/zciw/Pictures/Biblioteka Zdjęć.photoslibrary/originals/0/066CEE5D-C874-4D16-A6B7-A3BB13EDE3EF.jpeg"
-
-path = "/Users/zciw/Pictures/Biblioteka Zdjęć.photoslibrary/originals/0/"
+path = "/Users/zciw/Pictures/Biblioteka Zdjęć.photoslibrary/originals/1/"
 
 fl = [f for f in listdir(path) if isfile(join(path, f))]
 
 l = []
-
-
+suspectedDuplicateCounter = 0
 
 def showColor(filePath):
     with Image.open(filePath) as img:
         pix = img.load()
-        print(f"img size {img.size}")
-        l.Append(img.size)
-        print(pix[1,1])
+        obj = [img.size, pix[1,1], pix[img.size[0]/2, 2]]
+        if obj not in l:
+            l.append(l)
+
+        else:
+            print(obj)
+            print(filePath)
+            suspectedDuplicateCounter+=1
 
 for i in fl:
     p = path + i
-    if p[-1] == "g":
+    if p[-1] == "g" and p[-3] != "m":
         showColor(p)
-
+        print(p)
+print(f"liczba unikatowych zdjęć: {len(l)}, liczba podejżanych duplikatów {suspectedDuplicateCounter} ")
