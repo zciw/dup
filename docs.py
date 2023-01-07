@@ -3,6 +3,8 @@ import sys
 from AppKit import *
 from Foundation import *
 
+p = '/Users/zciw/Pictures/Biblioteka Zdjęć.photoslibrary'
+
 app = NSApplication.sharedApplication()
 notification_center = NSDistributedNotificationCenter.defaultCenter()
 
@@ -22,14 +24,17 @@ def createNote(self, notification):
         new_note.addAttachment_(attachment)
     notes_app.currentFolder.notes.addObject_(new_note)
 
-
+count=0
 tagged_photos = []
-for root, dirs, files in os.walk("/path/to/photos"):
+for root, dirs, files in os.walk(p):
     for file in files:
-        if file.endswith(".jpg") or file.endswith(".png"):
+        if file.endswith(".jpg") or file.endswith(".png") or file.endswith(".jpeg") or file.endswith(".raw"):
             file_path = os.path.join(root, file)
+            count = count + 1
             tags = os.popen(f"mdls -name kMDItemUserTags {file_path}").read()
             if "tagged" in tags:
                 tagged_photos.append(file_path)
 
-verImmediately_("com.apple.Scripting.noteCreationNotification", None, {"note subject": "Tagged Photos", "note text": "", "note attachments": tagged_photos}, True)
+print(f'tagged:  {len(tagged_photos)}, from {count}')
+
+# verImmediately_("com.apple.Scripting.noteCreationNotification", None, {"note subject": "Tagged Photos", "note text": "", "note attachments": tagged_photos}, True)
